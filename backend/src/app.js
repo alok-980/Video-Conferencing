@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from "express";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
@@ -12,7 +15,7 @@ const app = express();
 const server = createServer(app);
 const io = connectToSocket(server);
 
-app.set("port", (process.env.PORT || 8000));
+app.set("port", (process.env.PORT));
 app.use(cors());
 app.use(express.json({limit: "40kb"}));
 app.use(express.urlencoded({limit: "40kb", extended: true}));
@@ -20,11 +23,11 @@ app.use(express.urlencoded({limit: "40kb", extended: true}));
 app.use("/api/v1/users", userRoutes);
 
 const start = async () => {
-    const connectionDb = await mongoose.connect("mongodb+srv://sigma_student:kIGBJiyUvFhBp9gd@cluster0.oavuz.mongodb.net/videocall");
+    const connectionDb = await mongoose.connect(`${process.env.ATLASDB_URL}/videocall`);
     console.log(`Mongo Connected DB HOST: ${connectionDb.connection.host}`);
 
     server.listen(app.get("port"), () => {
-        console.log("LISTENING ON PORT 8000");
+        console.log(`Listening on PORT ${process.env.PORT}`);
     })
 }
 
