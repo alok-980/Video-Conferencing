@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import { User } from "../models/user.model.js";
 import bcrypt, { hash } from "bcrypt";
 import crypto from "crypto";
+import { Meeting } from "../models/meeting.model.js";
 
 const loging = async (req, res) => {
     const { username, password } = req.body;
@@ -17,12 +18,14 @@ const loging = async (req, res) => {
             return res.status(httpStatus.NOT_FOUND).json({ message: "User not found"});
         }
 
-        if(bcrypt.compare(password, user.password)) {
+        let isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+        if(isPasswordCorrect) {
             let token = crypto.randomBytes(20).toString("hex");
 
             user.token = token;
             await user.save();
-            return res.status(httpStatus.OK).json({ token: token });
+            return res.status(httpStatus.OK).json({ token: token, message: "User Loggedin" });
         }
     } catch (e) {
         return res.status(500).json({ message: `Something went wrong ${e}`});
@@ -54,4 +57,35 @@ const register = async (req, res) => {
     }
 }
 
-export { loging, register };
+const getUserHistory = async (req, res) => {
+    const { token } = req.query;
+
+    try {
+        const user = await User.findOne({token: token});
+        const meetings = await Meeting.find({user_id: user.username});
+        res.json(meetings);
+    } catch (err) {
+        res.json({message: `Something went wrong ${err}`});   
+    }
+}
+
+const addToHistory = async (req, res) => {
+    const {token, meeting_code} = req.body;
+    
+    try {
+        const user = await User.findOne({token: token});
+
+        const newMeeting = new Meeting({
+            user_id: user.username,
+            meetingCode: meeting_code
+        })
+
+        await newMeeting.save();
+
+        res.status(httpStatus.CREATED).json({message: "Added code to history"});
+    } catch (err) {
+        res.json({message: `Something went wrong ${err}`});
+    }
+}
+
+export { loging, register, getUserHistory, addToHistory };
