@@ -1,0 +1,27 @@
+.home-background {
+    width: 100vw;
+    height: 100vh;
+    background: url("/public/background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+}
+
+.navBar h3 {
+    color: white;
+}
+
+.leftPanel button {
+    background-color: orange;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.leftPanel button:hover {
+    background-color: #e68900;
+}

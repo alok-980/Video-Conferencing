@@ -1,0 +1,60 @@
+.history-page {
+    width: 100vw;
+    min-height: 100vh;
+    background: url("/public/background.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    padding: 2rem;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .home-button {
+    background-color: orange;
+    border: 2px solid orange;
+    border-radius: 0.3rem;
+    color: white;
+    margin-bottom: 1.5rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .home-button:hover {
+    background-color: #e68900;
+  }
+  
+  .history-container {
+    max-width: 800px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .history-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+  }
+  
+  .history-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  .history-date {
+    font-size: 0.95rem;
+    opacity: 0.85;
+  }
+  
+  .no-history {
+    margin-top: 2rem;
+    color: white;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+  

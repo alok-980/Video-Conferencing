@@ -7,7 +7,7 @@ import { createServer } from "node:http";
 import mongoose from "mongoose";
 import { connectToSocket } from "./controllers/socketManager.js";
 
-import  cors from "cors";
+import cors from "cors";
 import userRoutes from "./routes/users.routes.js";
 
 const app = express();
@@ -16,18 +16,23 @@ const io = connectToSocket(server);
 
 app.set("port", (process.env.PORT));
 app.use(cors());
-app.use(express.json({limit: "40kb"}));
-app.use(express.urlencoded({limit: "40kb", extended: true}));
+app.use(express.json({ limit: "40kb" }));
+app.use(express.urlencoded({ limit: "40kb", extended: true }));
 
 app.use("/api/v1/users", userRoutes);
 
 const start = async () => {
-    const connectionDb = await mongoose.connect(`${process.env.ATLASDB_URL}/videocall`);
-    console.log(`Mongo Connected DB HOST: ${connectionDb.connection.host}`);
+    try {
+        const connectionDb = await mongoose.connect(`${process.env.ATLASDB_URL}/videocall`);
+        console.log(`Mongo Connected DB HOST: ${connectionDb.connection.host}`);
 
-    server.listen(app.get("port"), () => {
-        console.log(`Listening on PORT ${process.env.PORT}`);
-    })
+        server.listen(app.get("port"), () => {
+            console.log(`Listening on PORT ${process.env.PORT}`);
+        })
+    } catch (error) {
+        console.error("Failed to connect to MongoDB", err);
+        process.exit(1);
+    }
 }
 
 start();
