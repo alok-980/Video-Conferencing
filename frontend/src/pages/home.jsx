@@ -38,7 +38,7 @@ function HomeComponent() {
             navigate(`/${meetingCode}`);
         } catch (err) {
             console.error("Failed to join call:", err);
-            alert("Something went wrong while joining the meeting.");
+            alert(`Something went wrong while joining the meeting.${err}`);
         }
     }
 
